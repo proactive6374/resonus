@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 jobs:
   build:
@@ -31,19 +31,16 @@ jobs:
           node-version: 22
           cache: pnpm
 
-      - name: Select Xcode 26
+      - name: Select Xcode 27.1
         run: |
-          CURRENT=$(xcode-select -p | sed 's|/Contents/Developer||')
-          echo "Default Xcode: $CURRENT"
-          PICK=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -n1 || true)
-          if [ -n "$PICK" ]; then
-            if [ "$PICK" != "$CURRENT" ]; then
-              echo "Selecting $PICK"
-              sudo xcode-select -s "$PICK"
-            fi
-          else
-            echo "::warning::No Xcode 26 on this runner: the lock screen's animated cover compiles out"
+          PICK="/Applications/Xcode_27_1.app"
+
+          if [ ! -d "$PICK" ]; then
+            echo "::error::Xcode 27.1 is not installed"
+            exit 1
           fi
+
+          sudo xcode-select -s "$PICK"
           xcodebuild -version
 
       - name: Install JS dependencies
