@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: xcode-27
     permissions:
       contents: write
 
@@ -33,7 +33,7 @@ jobs:
 
       - name: Select Xcode 27.1
         run: |
-          PICK="/Applications/Xcode_27_1.app"
+          PICK="/Applications/Xcode_27.1.app"
 
           if [ ! -d "$PICK" ]; then
             echo "::error::Xcode 27.1 is not installed"
